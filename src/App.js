@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Suspense } from "react";
+import "./App.css";
+import "react-day-picker/lib/style.css";
+import { StyleSheetManager } from "styled-components";
+import stylisRTLPlugin from "stylis-plugin-rtl";
+import { appContext } from "./AppContext";
+
+const DatePickerComponentLazy = React.lazy(() =>
+  import("./DatePickerComponent")
+);
 
 function App() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StyleSheetManager
+      stylisPlugins={appContext.isRightToLeft ? [stylisRTLPlugin] : []}
+    >
+      <div className="App">
+        <button onClick={(_) => setOpen(true)}>Open</button>
+        {open && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <DatePickerComponentLazy locale={appContext.locale} />
+          </Suspense>
+        )}
+      </div>
+    </StyleSheetManager>
   );
 }
 
