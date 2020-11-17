@@ -4,6 +4,7 @@ import DayPicker from "react-day-picker";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { loadScript } from "./useScript";
+import { appContext } from "./AppContext";
 
 
 // override the styled here
@@ -23,7 +24,7 @@ const DatePickerComponent = (props) => {
       // todo : we can host this ourselves probably
       await loadScript("https://unpkg.com/dayjs@1.8.21/dayjs.min.js");
       await loadScript(
-        "https://unpkg.com/dayjs@1.9.6/locale/" + props.locale + ".js"
+        "https://unpkg.com/dayjs@1.9.6/locale/" + props.locale + ".js",
       );
       await loadScript("https://unpkg.com/dayjs@1.9.6/plugin/localeData.js");
 
@@ -42,11 +43,13 @@ const DatePickerComponent = (props) => {
   return (
     load && (
       <StyledDatePicker
-        locale="ar"
+        locale={appContext.locale}
+        dir={appContext.isRightToLeft ? "rtl" : "ltr"}
         months={localeData.current.months()}
         weekdaysLong={localeData.current.weekdays()}
         weekdaysShort={localeData.current.weekdaysShort()}
         firstDayOfWeek={localeData.current.firstDayOfWeek()}
+        fromMonth={new Date()}
       />
     )
   );
