@@ -6,8 +6,12 @@ import stylisRTLPlugin from "stylis-plugin-rtl";
 import { appContext } from "./AppContext";
 
 const DatePickerComponentLazy = React.lazy(() =>
-  import("./DatePickerComponent")
+  import("./DatePickerComponent"),
 );
+
+// const DatePickerComponentAirBnbLazy = React.lazy(() =>
+//   import("./DatePickerComponentAirBnb"),
+// );
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -20,7 +24,10 @@ function App() {
         <button onClick={(_) => setOpen(true)}>Open</button>
         {open && (
           <Suspense fallback={<div>Loading...</div>}>
-            <DatePickerComponentLazy locale={appContext.locale} />
+            <h1>Select date range</h1>
+            <DatePickerComponentLazy
+              locale={appContext.locale} />
+            {/*<DatePickerComponentAirBnbLazy locale={appContext.locale} />*/}
           </Suspense>
         )}
       </div>
